@@ -4,18 +4,30 @@ struct Motor motores[6];
 
 void configurarMotores(struct Motor *configDePrueba)
 {
+    bool realizaUnaVez = false;
     for(uint8_t i = 0; i < CANT_MOTORES; i++){
         motores[i].activado = configDePrueba[i].activado;
         if(motores[i].activado){
             pinMode(pinMotores[i], OUTPUT);
             ledcSetup(i, FRECUENCIA_PWM_POR_DEFECTO, RESOLUCION_PWM_POR_DEFECTO);
             ledcAttachPin(pinMotores[i], i);
-            motores[i].setPointVelocidad = configDePrueba[i].setPointVelocidad;
             pinMode(pinSensoresHall[i], INPUT_PULLUP);
             attachInterrupt(digitalPinToInterrupt(pinSensoresHall[i]), interrupcionesSensorHall[i], RISING);
-            motores[i].tiempoAnterior = micros();
             motores[i].revoluciones = 0;
             motores[i].rpm = 0;
+            motores[i].setPointVelocidad = configDePrueba[i].setPointVelocidad;
+            motores[i].tiempoAnterior = micros();
+
+            if(!realizaUnaVez){
+                esp_timer_handle_t temporizador;
+                esp_timer_create_args_t argumentosTemporizador = {
+                    .callback = &actualizaPIDs, 
+                    .arg = NULL,
+                    .dispatch_method = ESP_TIMER_TASK
+                };
+                esp_timer_create(&argumentosTemporizador, &temporizador);
+                esp_timer_start_periodic(temporizador, PERIODO_DE_MUESTREO);
+            }
         }
     }
 }
@@ -89,5 +101,9 @@ double obtenerTiempoAnterior(uint8_t numMotor){
 
 void asignaCicloDeTrabajo(uint8_t numMotor,uint32_t cicloDeTrabajo){
     ledcWrite(numMotor, cicloDeTrabajo);
+}
+
+void actualizaPIDs(void *arg){
+    Serial.println("Se han actualizado los PID");
 }
 
