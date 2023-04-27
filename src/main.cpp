@@ -21,8 +21,11 @@ void setup()
 
 void loop()
 {
-  Serial.println(obtenerRevoluciones(motor1));
-  delay(1000);
+  for(uint32_t cicloDeTrabajo = 0; cicloDeTrabajo < 256; cicloDeTrabajo++){
+    asignaCicloDeTrabajo(motor1,cicloDeTrabajo);
+    Serial.println(obtenerRevoluciones(motor1));
+    delay(100);
+  }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

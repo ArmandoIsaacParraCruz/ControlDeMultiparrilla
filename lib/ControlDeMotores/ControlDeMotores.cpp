@@ -4,11 +4,14 @@ struct Motor motores[6];
 
 void configurarMotores(struct Motor *configDePrueba)
 {
-    for(int i = 0; i < CANT_MOTORES; i++){
+    for(uint8_t i = 0; i < CANT_MOTORES; i++){
         motores[i].activado = configDePrueba[i].activado;
         if(motores[i].activado){
+            pinMode(pinMotores[i], OUTPUT);
+            ledcSetup(i, FRECUENCIA_PWM_POR_DEFECTO, RESOLUCION_PWM_POR_DEFECTO);
+            ledcAttachPin(pinMotores[i], i);
             motores[i].setPointVelocidad = configDePrueba[i].setPointVelocidad;
-            pinMode(pinMotores[i], INPUT_PULLUP);
+            pinMode(pinSensoresHall[i], INPUT_PULLUP);
             attachInterrupt(digitalPinToInterrupt(pinSensoresHall[i]), interrupcionesSensorHall[i], RISING);
             motores[i].tiempoAnterior = micros();
             motores[i].revoluciones = 0;
@@ -83,4 +86,8 @@ double obtenerTiempoAnterior(uint8_t numMotor){
     return motores[numMotor].tiempoAnterior;
 }
 
+
+void asignaCicloDeTrabajo(uint8_t numMotor,uint32_t cicloDeTrabajo){
+    ledcWrite(numMotor, cicloDeTrabajo);
+}
 

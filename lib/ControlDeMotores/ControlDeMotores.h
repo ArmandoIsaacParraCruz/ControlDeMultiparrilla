@@ -19,6 +19,8 @@ const uint8_t pinSensoresHall[CANT_MOTORES] = {26,34,35,32,33,25};
 const double constantesKp[CANT_MOTORES] = {0.1,0.1,0.1,0.1,0.1,0.1};
 const double constanteski[CANT_MOTORES] = {0.02,0.02,0.02,0.02,0.02,0.02};
 const double constantesKd[CANT_MOTORES] = {0,0,0,0,0,0};
+const uint32_t FRECUENCIA_PWM_POR_DEFECTO = 15000;
+const uint8_t RESOLUCION_PWM_POR_DEFECTO = 8;
 
 
 struct Motor{
@@ -27,6 +29,7 @@ struct Motor{
     double setPointVelocidad;
     volatile uint32_t revoluciones;
     uint16_t tiempoAnterior;
+    uint8_t cicloDeTrabajo; 
 };
 
 extern struct Motor motores[6];
@@ -51,5 +54,7 @@ double obtenerVelocidad(uint8_t);
 double obtenerSetPointVelocidad(uint8_t);
 double obtenerRevoluciones(uint8_t);
 double obtenerTiempoAnterior(uint8_t);
+
+void asignaCicloDeTrabajo(uint8_t,uint32_t);
 
 #endif
