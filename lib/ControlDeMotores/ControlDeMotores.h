@@ -54,8 +54,7 @@ void agregaUnaVuelta(uint8_t);
 bool obtenerEstadoMotor(uint8_t);
 double obtenerVelocidad(uint8_t);
 double obtenerSetPointVelocidad(uint8_t);
-double obtenerRevoluciones(uint8_t);
-double obtenerTiempoAnterior(uint8_t);
+
 
 void asignaCicloDeTrabajo(uint8_t,double);
 

@@ -106,17 +106,12 @@ bool obtenerEstadoMotores(uint8_t numMotor){
     return motores[numMotor].activado;
 }
 double obtenerVelocidad(uint8_t numMotor){
-    return motores[numMotor].rpm;
+    return motores[numMotor].rpmFiltrado;
 }
 double obtenerSetPointVelocidad(uint8_t numMotor){
     return motores[numMotor].setPointVelocidad;
 }
-double obtenerRevoluciones(uint8_t numMotor){
-    return motores[numMotor].revoluciones;
-}
-double obtenerTiempoAnterior(uint8_t numMotor){
-    return motores[numMotor].tiempoAnterior;
-}
+
 
 
 void asignaCicloDeTrabajo(uint8_t numMotor,double cicloDeTrabajo){
