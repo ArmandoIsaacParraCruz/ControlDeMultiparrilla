@@ -23,18 +23,27 @@ const double alpha  = 0.01;
 const uint8_t pinMotores[CANT_MOTORES] = {5,18,19,21,3,1};
 const uint8_t pinSensoresHall[CANT_MOTORES] = {26,34,35,32,33,25};
 const double constantesKp[CANT_MOTORES] = {0.1,0.1,0.1,0.1,0.1,0.1};
-const double constanteski[CANT_MOTORES] = {0.02,0.02,0.02,0.02,0.02,0.02};
-const double constantesKd[CANT_MOTORES] = {0,0,0,0,0,0};
+const double constanteski[CANT_MOTORES] = {0.01,0.02,0.02,0.02,0.02,0.02};
+const double constantesKd[CANT_MOTORES] = {0.01,0,0,0,0,0};
 
 struct Motor{
     bool activado;
     double rpm;
     double rpmFiltrado;
     double setpointActual;
+    double setpointAnterior;
     double minutosParaMantenerSetpointActual;
     volatile uint32_t revoluciones;
     uint16_t tiempoAnterior;
-    double cicloDeTrabajo;
+    double cicloDeTrabajoActual;
+    double cicloDeTrabajoAnterior;
+    std::queue<double>minutosParaMantenerSetpoints;
+    std::queue<double>setpoints;
+};
+
+
+struct configuracionParaMotor{
+    bool activado;
     std::queue<double>minutosParaMantenerSetpoints;
     std::queue<double>setpoints;
 };
@@ -51,7 +60,7 @@ void activaPIDDelMotorI(uint8_t);
 void activaTimerParaActualizarLosPIDs();
 void activaTimerParaActualizarLosSetpoints();
 
-void configurarMotores(struct Motor*);
+void configurarMotores(struct configuracionParaMotor*);
 
 void IRAM_ATTR interrupcionSensorHall1();
 void IRAM_ATTR interrupcionSensorHall2();
