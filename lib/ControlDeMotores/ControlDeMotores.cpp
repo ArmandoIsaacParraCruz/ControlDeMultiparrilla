@@ -185,9 +185,8 @@ void IRAM_ATTR actualizaSetPoints(void *arg)
 {
     for(uint8_t i = 0; i < CANT_MOTORES; i++){
         if(motores[i].activado){
-             //Serial.println(motores[i].minutosParaMantenerSetpoints.size());
-          //double minutosTranscurridos = millis()/(1000.0*60.0); 
-            double minutosTranscurridos = millis()/(1000.0*10.0); 
+          double minutosTranscurridos = millis()/(1000.0*60.0); 
+          //  double minutosTranscurridos = millis()/(1000.0*10.0); 
             if(minutosTranscurridos >= motores[i].minutosParaMantenerSetpointActual){
                 if(!motores[i].minutosParaMantenerSetpoints.empty() && !motores[i].setpoints.empty()){
                     motores[i].minutosParaMantenerSetpointActual = motores[i].minutosParaMantenerSetpoints.front();

@@ -9,12 +9,10 @@ int tiempoAnterior ;
 
 void initStructsDePrueba(){
   encendido.activado = true;
-  encendido.minutosParaMantenerSetpoints.push(2);
+  encendido.minutosParaMantenerSetpoints.push(1);
   encendido.setpoints.push(500);
-  encendido.minutosParaMantenerSetpoints.push(4);
-  encendido.setpoints.push(600);
-  encendido.minutosParaMantenerSetpoints.push(6);
-  encendido.setpoints.push(700);
+  encendido.minutosParaMantenerSetpoints.push(2);
+  encendido.setpoints.push(100);
   apagado.activado = false;
 }
 
