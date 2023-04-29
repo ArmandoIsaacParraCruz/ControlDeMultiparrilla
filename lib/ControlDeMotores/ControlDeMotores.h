@@ -1,6 +1,7 @@
 #ifndef ControlDeMotores_h
 #define ControlDeMotores_h
 #include <Arduino.h>
+#include <queue>
 #include <PID_v1.h>
 #include <driver/ledc.h>
 #include <esp_timer.h>
@@ -10,6 +11,7 @@
 #define FRECUENCIA_PWM 15000
 #define RESOLUCION_PWM 8
 #define PERIODO_DE_MUESTREO 100000
+#define TIEMPO_PARA_ACTUALIZAR_SETPOINT 10000000
 #define VALOR_INICIAL 0
 #define VALOR_LIMITE_PWM 255
 #define RPM_EN_100_MILISEGUNDOS 600
@@ -28,14 +30,26 @@ struct Motor{
     bool activado;
     double rpm;
     double rpmFiltrado;
-    double setPointVelocidad;
+    double setpointActual;
+    double minutosParaMantenerSetpointActual;
     volatile uint32_t revoluciones;
     uint16_t tiempoAnterior;
-    double cicloDeTrabajo; 
+    double cicloDeTrabajo;
+    std::queue<double>minutosParaMantenerSetpoints;
+    std::queue<double>setpoints;
 };
+
+
 
 extern struct Motor motores[6];
 extern PID PIDsParaMotores[6];
+
+void activaPWMDelMotorI(uint8_t);
+void activaInterrupcionExternaDelMotorI(uint8_t);
+void inicializaValoresDelMotorI(uint8_t);
+void activaPIDDelMotorI(uint8_t);
+void activaTimerParaActualizarLosPIDs();
+void activaTimerParaActualizarLosSetpoints();
 
 void configurarMotores(struct Motor*);
 
@@ -58,8 +72,9 @@ double obtenerSetPointVelocidad(uint8_t);
 
 void asignaCicloDeTrabajo(uint8_t,double);
 
-void actualizaPIDs(void *arg);
-
+void IRAM_ATTR actualizaPIDs(void *arg);
 void calculaRPM(uint8_t);
+
+void IRAM_ATTR actualizaSetPoints(void *arg);
 
 #endif

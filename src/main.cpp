@@ -1,18 +1,29 @@
 #include <Arduino.h>
 #include "ControlDeMotores.h"
 
-struct Motor encendido = {true,0,0,120,0,0,0};
-struct Motor apagado = {false,0,0,0,0,0,0};
-
-struct Motor configDePrueba[6] = {encendido,apagado,apagado,apagado,apagado,apagado};
+struct Motor encendido;
+struct Motor apagado;
 
 
 int tiempoAnterior ;
+
+void initStructsDePrueba(){
+  encendido.activado = true;
+  encendido.minutosParaMantenerSetpoints.push(2);
+  encendido.setpoints.push(500);
+  encendido.minutosParaMantenerSetpoints.push(4);
+  encendido.setpoints.push(600);
+  encendido.minutosParaMantenerSetpoints.push(6);
+  encendido.setpoints.push(700);
+  apagado.activado = false;
+}
 
  // Serial.println("Se han actualizado los PID");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void setup()
 {
+  initStructsDePrueba();
+  struct Motor configDePrueba[6] = {encendido,apagado,apagado,apagado,apagado,apagado};
   Serial.begin(9600);
   configurarMotores(configDePrueba);
   tiempoAnterior = millis();
@@ -21,8 +32,8 @@ void setup()
 void loop()
 {
   if(millis()-tiempoAnterior >= 1000){
-    Serial.print(motores[motor1].rpm);Serial.print(" ");Serial.print(motores[motor1].rpmFiltrado);Serial.print(" ");Serial.print(motores[motor1].setPointVelocidad);
-    Serial.print(" ");Serial.println(motores[motor1].cicloDeTrabajo);
+    Serial.print(motores[motor1].rpm);Serial.print(" ");Serial.print(motores[motor1].rpmFiltrado);Serial.print(" ");Serial.print(motores[motor1].setpointActual);
+    Serial.print(" ");Serial.print(motores[motor1].cicloDeTrabajo);Serial.print(" ");Serial.println(millis()/1000.0);
     tiempoAnterior = millis();
   }
 }
