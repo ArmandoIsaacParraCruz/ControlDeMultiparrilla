@@ -86,7 +86,7 @@ void activaTimerParaActualizarLosPIDs(){
         .dispatch_method = ESP_TIMER_TASK
     };
     esp_timer_create(&argumentosTemporizadorPIDs, &temporizadorPIDs);
-    esp_timer_start_periodic(temporizadorPIDs, PERIODO_DE_MUESTREO);
+    esp_timer_start_periodic(temporizadorPIDs, TIEMPO_PARA_ACTUALIZAR_PIDs);
 }
 
 void activaTimerParaActualizarLosSetpoints()
@@ -189,10 +189,9 @@ void IRAM_ATTR actualizaSetPoints(void *arg)
     for(uint8_t i = 0; i < CANT_MOTORES; i++){
         if(motores[i].activado){
           double minutosTranscurridos = millis()/(1000.0*60.0); 
-          //  double minutosTranscurridos = millis()/(1000.0*10.0); 
             if(minutosTranscurridos >= motores[i].minutosParaMantenerSetpointActual){
                 if(!motores[i].minutosParaMantenerSetpoints.empty() && !motores[i].setpoints.empty()){
-                    if(motores[i].setpoints.front() < motores[i].setpointActual){
+                   if(motores[i].setpoints.front() < motores[i].setpointActual){
                         motores[i].rpmFiltrado = VALOR_INICIAL;
                     }
                     motores[i].cicloDeTrabajoAnterior = motores[i].cicloDeTrabajoActual;

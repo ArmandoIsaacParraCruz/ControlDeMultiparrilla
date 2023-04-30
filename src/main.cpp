@@ -38,8 +38,8 @@ void setup()
 void loop()
 {
   if(millis()-tiempoAnterior >= 1000){
-    Serial.print(motores[motor1].rpmFiltrado);Serial.print(" ");Serial.print(motores[motor1].setpointActual);
-    Serial.print(" ");Serial.print(motores[motor1].cicloDeTrabajoActual);Serial.print(" ");Serial.println(millis()/1000.0);
+    Serial.print("Velocidad [rpm]:");Serial.print(motores[motor1].rpmFiltrado);Serial.print("  Velocidad deseada[rpm]:");Serial.print(motores[motor1].setpointActual);
+    Serial.print("  Tiempo[s]:");Serial.println(millis()/1000.0);
     tiempoAnterior = millis();
   }
 }
