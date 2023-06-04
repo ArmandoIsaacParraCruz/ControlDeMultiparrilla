@@ -114,7 +114,7 @@ void configurarMotores(struct configuracionParaMotor *configDePrueba)
             while(!configDePrueba[i].setpoints.empty() && !configDePrueba[i].minutosParaMantenerSetpoints.empty()){
                 motores[i].setpoints.push(configDePrueba[i].setpoints.front());
                 configDePrueba[i].setpoints.pop();
-                motores[i].minutosParaMantenerSetpoints.push(configDePrueba[i].minutosParaMantenerSetpoints.front());
+                motores[i].minutosParaMantenerSetpoints.push(configDePrueba[i].minutosParaMantenerSetpoints.front() + millis()/(1000.0*60.0));
                 configDePrueba[i].minutosParaMantenerSetpoints.pop();
             }
 
