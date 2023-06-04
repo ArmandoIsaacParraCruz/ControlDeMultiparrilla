@@ -17,7 +17,7 @@ PIDs de forma periódica.
 //En este apartado se define la librería "ControlDeMotores.h" que es desarrollado a lo largo del código, 
 //y se incluyen las dependencias necesarias para su funcionamiento.
 #ifndef ControlDeMotores_h
-#define ControlDeMotores_h
+#define ControlDeMotores_h 
 #include <Arduino.h>
 #include <queue>
 #include <PID_v1.h>
